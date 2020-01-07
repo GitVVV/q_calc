@@ -6,19 +6,17 @@ import 'exceptions.dart';
 
 
 class CalculationScreen extends StatefulWidget {
-  final CalculationType _type;
+  final CalculationType type;
 
-  CalculationScreen(this._type);
+  const CalculationScreen(this.type, {Key key}): super(key: key);
 
   @override
-  _CalculationScreenState createState() => _CalculationScreenState(_type);
+  _CalculationScreenState createState() => _CalculationScreenState(type);
 }
 
 class _CalculationScreenState extends State<CalculationScreen> {
 
-  CalculationType _type;
-  var _incomeCalc = IncomeCalculator();
-  var _outcomeCalc = OutcomeCalculator();
+  var _calc;
 
   final _sumController = TextEditingController();
   final _percentController = TextEditingController();
@@ -27,13 +25,14 @@ class _CalculationScreenState extends State<CalculationScreen> {
   String result;
 
   _CalculationScreenState(CalculationType type) {
-    _type = type;
-    if (_type == null) {
-      _type = CalculationType.INCOME;
-    }
+    this._calc = type == CalculationType.OUTCOME ? OutcomeCalculator() : IncomeCalculator();
+
+    _sumController.addListener(_calculate);
+    _precisionController.addListener(_calculate);
+    _percentController.addListener(_calculate);
   }
 
-  void _calc() {
+  void _calculate() {
     double sum = _sumController.text.isEmpty ? 0 : double.parse(_sumController.text);
     sum = sum == null ? 0 : sum;
 
@@ -44,9 +43,8 @@ class _CalculationScreenState extends State<CalculationScreen> {
     percent = percent == null ? 0 : percent;
 
     try {
-      var calculator = _type == CalculationType.INCOME ? _incomeCalc : _outcomeCalc;
       setState(() {
-        result = calculator.calcQuantity(sum, percent).toStringAsFixed(precision);
+        result = _calc.calcQuantity(sum, percent).toStringAsFixed(precision);
       });
     } on UnreachableValue {
       setState(() {
@@ -55,14 +53,6 @@ class _CalculationScreenState extends State<CalculationScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    _sumController.addListener(_calc);
-    _precisionController.addListener(_calc);
-    _percentController.addListener(_calc);
-  }
 
   @override
   void dispose() {
@@ -75,29 +65,40 @@ class _CalculationScreenState extends State<CalculationScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      child: Column(
-        children: <Widget>[
-          TextFormField(
-            decoration: InputDecoration(labelText: "Input sum"),
-            controller: _sumController,
-            keyboardType:
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: "Input sum"),
+                controller: _sumController,
+                keyboardType:
                 TextInputType.numberWithOptions(decimal: true, signed: false),
-          ),
-          TextFormField(
-            decoration: InputDecoration(labelText: "Input percent"),
-            controller: _percentController,
-            keyboardType:
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Input percent"),
+                controller: _percentController,
+                keyboardType:
                 TextInputType.numberWithOptions(decimal: true, signed: false),
-          ),
-          TextFormField(
-            decoration: InputDecoration(labelText: "Input precision"),
-            controller: _precisionController,
-            keyboardType:
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: "Input precision"),
+                controller: _precisionController,
+                keyboardType:
                 TextInputType.numberWithOptions(decimal: false, signed: false),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                    result != null ? result : "",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                  ),
+                ),
+              ),
+            ],
           ),
-          Text(result != null ? result : ""),
-        ],
-      ),
+        )
     );
   }
 }

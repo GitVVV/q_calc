@@ -14,12 +14,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Q Calc'),
-        ),
-        body: CalculationScreen(
-          CalculationType.OUTCOME
+      home: DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Q Calc'),
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  text: "Outcome",
+                ),
+                Tab(
+                  text: "Income",
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+//              Icon(Icons.directions_car),
+//              Icon(Icons.directions_transit),
+              CalculationScreen(CalculationType.OUTCOME),
+              CalculationScreen(CalculationType.INCOME),
+            ],
+          ),
         ),
       ),
     );

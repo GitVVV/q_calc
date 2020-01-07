@@ -2,15 +2,13 @@ import '../exceptions.dart';
 
 abstract class QuantityCalculator {
   double calcQuantity(double amount, double percentLoss);
-}
 
-abstract class BaseQuantityCalculator extends QuantityCalculator {
   bool isValueIncorrect(double value) {
     return value < 0 || value.isInfinite || value.isNaN;
   }
 }
 
-class IncomeCalculator extends BaseQuantityCalculator {
+class IncomeCalculator extends QuantityCalculator {
 
   @override
   double calcQuantity(double amount, double percentLoss) {
@@ -22,7 +20,7 @@ class IncomeCalculator extends BaseQuantityCalculator {
   }
 }
 
-class OutcomeCalculator extends BaseQuantityCalculator {
+class OutcomeCalculator extends QuantityCalculator {
 
   @override
   double calcQuantity(double amount, double percentLoss) {

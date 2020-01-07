@@ -1,1 +1,1 @@
-class UnreachableValue implements Exception { }
+class UnreachableValue implements Exception {}

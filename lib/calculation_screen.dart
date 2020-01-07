@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'logic/calculator.dart';
 import 'exceptions.dart';
 
-
 class CalculationScreen extends StatefulWidget {
   final CalculationType type;
 
-  const CalculationScreen(this.type, {Key key}): super(key: key);
+  const CalculationScreen(this.type, {Key key}) : super(key: key);
 
   @override
   _CalculationScreenState createState() => _CalculationScreenState(type);
 }
 
 class _CalculationScreenState extends State<CalculationScreen> {
-
   var _calc;
 
   final _sumController = TextEditingController();
@@ -53,7 +51,6 @@ class _CalculationScreenState extends State<CalculationScreen> {
     }
   }
 
-
   @override
   void dispose() {
     _sumController.dispose();
@@ -65,40 +62,37 @@ class _CalculationScreenState extends State<CalculationScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: "Input sum"),
-                controller: _sumController,
-                keyboardType:
-                TextInputType.numberWithOptions(decimal: true, signed: false),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "Input percent"),
-                controller: _percentController,
-                keyboardType:
-                TextInputType.numberWithOptions(decimal: true, signed: false),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "Input precision"),
-                controller: _precisionController,
-                keyboardType:
-                TextInputType.numberWithOptions(decimal: false, signed: false),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                    result != null ? result : "",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                  ),
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(labelText: "Input sum"),
+              controller: _sumController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: "Input percent"),
+              controller: _percentController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: "Input precision"),
+              controller: _precisionController,
+              keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                result != null ? result : "",
+                style: TextStyle(
+                  fontSize: 24.0,
                 ),
               ),
-            ],
-          ),
-        )
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -9,26 +9,21 @@ abstract class QuantityCalculator {
 }
 
 class IncomeCalculator extends QuantityCalculator {
-
   @override
   double calcQuantity(double amount, double percentLoss) {
     double result = amount * (1 - percentLoss / 100);
-    if(isValueIncorrect(result))
-      throw UnreachableValue();
+    if (isValueIncorrect(result)) throw UnreachableValue();
 
     return result;
   }
 }
 
 class OutcomeCalculator extends QuantityCalculator {
-
   @override
   double calcQuantity(double amount, double percentLoss) {
     double result = amount / (1 - percentLoss / 100);
-    if(isValueIncorrect(result))
-      throw UnreachableValue();
+    if (isValueIncorrect(result)) throw UnreachableValue();
 
     return result;
   }
-
 }
